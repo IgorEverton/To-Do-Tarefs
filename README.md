@@ -6,6 +6,7 @@ Uma API para o sistema de lista de tarefas
 ## EndPoins
 - Tarefas
     - [Criar tarefa](#criar-tarefa)
+<<<<<<< HEAD
     - [Atualizar tarefa](#atualizar-tarefas)
     - [Excluír tarefa](#deletar-tarefas)
     - [Visualizar tarefa/tarefas](#visualizar-tarefas)
@@ -23,6 +24,17 @@ Uma API para o sistema de lista de tarefas
     - atualizar Usuario
     - ver usuário
     - deletar usuário
+=======
+    - Atualizar tarefa
+    - Excluír tarefa
+    - [Visualizar tarefa/tarefas](#visualizar-tarefas)
+
+- Categorias
+ - Criar Categoria
+    - Atualizar Categoria
+    - Excluír Categoria
+    - Visualizar Categoria/Categorias
+>>>>>>> 95cf00b (documentação da api versão inicial)
 
 ### Criar tarefa
 `POST`/todotarefs/api/tarefa
@@ -30,22 +42,40 @@ Uma API para o sistema de lista de tarefas
 | campo | tipo | obrigatório | descrição
 |-------|------|-------------|----------
 | titulo | String | sim | Local onde será definido o titulo da atividade
+<<<<<<< HEAD
 | categoria_id | int | sim | é o id de uma categoria previmente cadastrada
 | descrição | String | não | é onde será colocado a descrição da tarefa
 | data | data | sim | marcação da data dessa tarefa ou até onde ela será valida
 | id | int | sim | id da tarefa e será incrementado no sgbd
+=======
+
+| categoria_id | int | sim | é o id de uma categoria previmente cadastrada
+
+| descrição | String | não | é onde será colocado a descrição da tarefa
+
+| data | data | sim | marcação da data dessa tarefa ou até onde ela será valida
+>>>>>>> 95cf00b (documentação da api versão inicial)
 
 
 
 ***Exemplo de corpo de request**
 
 ```
+<<<<<<< HEAD
 {   
     "id":1,
     "titulo": "Fazer compra da semana",
     "categoria": 1,
     "descricao":"Compra semanal",
     "data":"24/02/2023"
+=======
+{
+    "titulo": "Fazer compra da semana",
+    "categoria_id": 1,
+    "descricao":"Compra semanal",
+    "data":"2023-04-24",
+
+>>>>>>> 95cf00b (documentação da api versão inicial)
 }
 
 ```
@@ -65,11 +95,24 @@ Uma API para o sistema de lista de tarefas
 
 ```js
 
+<<<<<<< HEAD
 {
     "titulo": "Fazer compra da semana",
     "categoria": 1,
     "descricao":"Compra semanal",
     "data":"24/02/2023"
+=======
+
+{
+    "titulo": "Fazer compra da semana",
+    "categoria": {
+        "categoria_id": 1,
+        "nome":"tarefa padrão"
+    }
+    "descricao":"Compra semanal",
+    "data":"2023-04-24",
+
+>>>>>>> 95cf00b (documentação da api versão inicial)
 }
 ```
 
@@ -78,6 +121,7 @@ Uma API para o sistema de lista de tarefas
 | código | descrição 
 |-|-
 | 201 | tarefa cadastrada com sucesso
+<<<<<<< HEAD
 | 400 | erro na validação dos dados
 
 ### deletar Tarefas
@@ -315,3 +359,6 @@ Uma API para o sistema de lista de tarefas
 | 200 | ok
 | 400 | 
 
+=======
+| 400 | erro na validação dos dados
+>>>>>>> 95cf00b (documentação da api versão inicial)
