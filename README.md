@@ -62,11 +62,11 @@ Uma API para o sistema de lista de tarefas
     "categoria": {
         "categoria_id": 1,
         "nome":"tarefa recorrente semanal"
-    }
-    "descricao":"Compra semanal",
     "data":"2023-04-24",
 
-}
+}    }
+    "descricao":"Compra semanal",
+
 ```
 
 **Código de Resposta**
