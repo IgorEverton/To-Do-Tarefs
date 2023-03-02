@@ -22,11 +22,8 @@ Uma API para o sistema de lista de tarefas
 | campo | tipo | obrigatório | descrição
 |-------|------|-------------|----------
 | titulo | String | sim | Local onde será definido o titulo da atividade
-
 | categoria_id | int | sim | é o id de uma categoria previmente cadastrada
-
 | descrição | String | não | é onde será colocado a descrição da tarefa
-
 | data | data | sim | marcação da data dessa tarefa ou até onde ela será valida
 
 
@@ -64,7 +61,7 @@ Uma API para o sistema de lista de tarefas
     "titulo": "Fazer compra da semana",
     "categoria": {
         "categoria_id": 1,
-        "nome":"tarefa padrão"
+        "nome":"tarefa recorrente semanal"
     }
     "descricao":"Compra semanal",
     "data":"2023-04-24",
