@@ -1,6 +1,6 @@
 package br.com.fiap.todotarefs.controllers.models;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 
 public class Tarefa {
