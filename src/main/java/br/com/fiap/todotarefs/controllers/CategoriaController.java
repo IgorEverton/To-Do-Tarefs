@@ -16,12 +16,8 @@ public class CategoriaController {
 
     @GetMapping("/api/categorias")
     public Categoria show(){
-        Tarefa tarefa_1 = new Tarefa
-         ("treino perna", 
-         1, 
-         "treino de perna da semana 1 a 3", 
-         LocalDate.now(), 
-         0);
+        Tarefa  tarefa_1 = new Tarefa("treino perna", 1, "treino de perna da semana 1 a 3", LocalDate.now(), (long) yt1)
+        ;
         Categoria categoria = new Categoria(1,
          "Categoria de tarefas de treinos semana 1 ao 3", 
          tarefa_1
