@@ -8,10 +8,10 @@ public class Tarefa {
     private int categoria_id;
     private String descricao;
     private LocalDate data;
-    private int id;
+    private Long id;
 
 
-    public Tarefa(String titulo, int categoria_id, String descricao, LocalDate data, int id) {
+    public Tarefa(String titulo, int categoria_id, String descricao, LocalDate data, Long id) {
         this.titulo = titulo;
         this.categoria_id = categoria_id;
         this.descricao = descricao;
@@ -60,12 +60,12 @@ public class Tarefa {
     }
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
