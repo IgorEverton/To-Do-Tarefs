@@ -1,7 +1,7 @@
 package br.com.fiap.todotarefs.controllers.models;
 
 public class Categoria {
-    private int id;
+    private Long id;
     private String ds_categoria;
     private Tarefa tarefa;
 
@@ -10,15 +10,15 @@ public class Categoria {
         
     }
 
-    public Categoria(int id, String ds_categoria, Tarefa tarefa) {
+    public Categoria(Long id, String ds_categoria, Tarefa tarefa) {
         this.id = id;
         this.ds_categoria = ds_categoria;
         this.tarefa = tarefa;
     }
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getDs_categoria() {
@@ -33,6 +33,11 @@ public class Categoria {
     public void setTarefa(Tarefa tarefa) {
         this.tarefa = tarefa;
     }
+    @Override
+        public String toString() {
+        // TODO Auto-generated method stub
+    return super.toString();
+    }
 
-    
+   
 }
