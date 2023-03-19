@@ -62,13 +62,13 @@ public class TarefaController {
     }
     @DeleteMapping("/api/tarefas/{id}")
     public ResponseEntity<Tarefa> destroy(@PathVariable Long id){
-        log.info("Buscando tarefa com id "+id);
+        log.info("Deletando tarefa com id "+id);
         var tarefaEncontrada = tarefas.stream().filter(d-> d.getId().equals(id)).findFirst();
         
         if (tarefaEncontrada.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        tarefas  .remove(tarefaEncontrada.get());
+        tarefas.remove(tarefaEncontrada.get());
         
         
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

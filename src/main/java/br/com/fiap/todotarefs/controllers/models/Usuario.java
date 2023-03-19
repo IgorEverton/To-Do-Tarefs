@@ -2,19 +2,23 @@ package br.com.fiap.todotarefs.controllers.models;
 import java.time.LocalDate;
 
 public class Usuario {
-    private int id;
+    private Long id;
     private String nm_usuario;
     private LocalDate dt_nascimento;
     private String ds_email;
     private String nr_telefone;
     private boolean st_conta;
 
-    
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString();
+    }
     public Usuario(){
         
     }
 
-    public Usuario(int id, String nm_usuario, LocalDate dt_nascimento, String ds_email, String nr_telefone,
+    public Usuario(Long id, String nm_usuario, LocalDate dt_nascimento, String ds_email, String nr_telefone,
             boolean st_conta) {
         this.id = id;
         this.nm_usuario = nm_usuario;
@@ -23,10 +27,10 @@ public class Usuario {
         this.nr_telefone = nr_telefone;
         this.st_conta = st_conta;
     }
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getNm_usuario() {
