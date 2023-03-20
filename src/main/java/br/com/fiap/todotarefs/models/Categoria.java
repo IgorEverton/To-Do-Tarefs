@@ -1,4 +1,4 @@
-package br.com.fiap.todotarefs.controllers.models;
+package br.com.fiap.todotarefs.models;
 
 public class Categoria {
     private Long id;

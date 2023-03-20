@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.com.fiap.todotarefs.models.Usuario;
+
 import org.springframework.web.bind.annotation.RequestBody;
-import br.com.fiap.todotarefs.controllers.models.Usuario;
 
 
 public class UsuarioController {

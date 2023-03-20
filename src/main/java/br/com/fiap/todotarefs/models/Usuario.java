@@ -1,4 +1,4 @@
-package br.com.fiap.todotarefs.controllers.models;
+package br.com.fiap.todotarefs.models;
 import java.time.LocalDate;
 
 public class Usuario {
