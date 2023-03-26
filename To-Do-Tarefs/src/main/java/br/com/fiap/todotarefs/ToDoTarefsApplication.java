@@ -8,6 +8,7 @@ public class ToDoTarefsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ToDoTarefsApplication.class, args);
+		System.out.println("vasco");
 	}
 
 }
