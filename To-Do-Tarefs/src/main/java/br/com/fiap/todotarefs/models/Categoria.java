@@ -3,6 +3,9 @@ package br.com.fiap.todotarefs.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})	
 @Table(name="tdt_categoria")
 public class Categoria {
 	
@@ -22,6 +26,7 @@ public class Categoria {
     private String descricao;
 	@Column(name="st_categoria")
 	private boolean stts;
+	@JsonIgnore
 	@OneToMany(mappedBy = "categoria")
 	private List<Tarefa> tarefas = new ArrayList<>();
 	
@@ -69,11 +74,15 @@ public class Categoria {
 	}
 	
 	
+	public void atualizar(Categoria categoria) {
+		if(categoria.descricao!=null) {
+			this.descricao=categoria.descricao;
+		}
+	}
 	
-	
-	
-	
+	public void excluir() {
+		this.stts=false;
+	}
 	
 
-   
 }

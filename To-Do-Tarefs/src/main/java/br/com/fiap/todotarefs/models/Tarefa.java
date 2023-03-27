@@ -4,15 +4,18 @@ package br.com.fiap.todotarefs.models;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import br.com.fiap.todotarefs.repository.CategoriaRepository;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name="tdt_tarefa")
 public class Tarefa {
@@ -31,7 +34,8 @@ public class Tarefa {
     private boolean favoritado;
     @Column(name="st_categoria")
     private boolean stts;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
+    @JoinColumn(name="id_categoria")
     private Categoria categoria;
     
     
@@ -54,8 +58,7 @@ public class Tarefa {
 		this.categoria = categoria;
 	}
 
-
-
+ 
 	public Long getId() {
 		return id;
 	}
@@ -104,12 +107,29 @@ public class Tarefa {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-    
-    
 
 
 
-    
-
-    
+	public void atulizar(Tarefa tarefaDados) {
+		if(tarefaDados.dataTermino!=null) {
+				this.dataTermino=tarefaDados.dataTermino;
+			
+		}
+		if(tarefaDados.descricao!=null) {
+			this.descricao=tarefaDados.descricao;
+		}
+		if(tarefaDados.nome!=null) {
+			this.nome=tarefaDados.nome;
+		}
+		
+	}
+	
+	public void excluir() {
+		this.stts=false;
+	}
+	
+	public void favoritar() {
+		this.favoritado=true;
+	}
+        
 }
