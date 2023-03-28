@@ -7,15 +7,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraint.Min;
 
 @Entity
 public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Min(value=0, message = "o valor da despesa deve ser positivo")
     private String titulo;
     private int categoria_id;
     private String descricao;
+    @NotNull
     private LocalDate data;
     
 
