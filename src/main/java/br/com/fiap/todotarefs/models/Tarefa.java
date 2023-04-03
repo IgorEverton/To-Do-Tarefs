@@ -7,18 +7,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraint.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Min(value=0, message = "o valor da despesa deve ser positivo")
+    @NotEmpty(message = "Deve preencher o campo titulo")
     private String titulo;
     private int categoria_id;
+    @NotEmpty(message = "Deve preencher o campo descrição")
     private String descricao;
-    @NotNull
+    @NotBlank(message = "Deve preencher o campo com a data da sua tarefa") @Size(min = 5, max = 255) 
     private LocalDate data;
     
 
