@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.todotarefs.exception.RestNotFoundException;
 import br.com.fiap.todotarefs.models.RestError;
 import br.com.fiap.todotarefs.models.Tarefa;
 import br.com.fiap.todotarefs.repository.TarefaRepository;
+import jakarta.validation.Valid;
 
 @RequestMapping("/api/tarefas")
 @RestController
@@ -43,7 +45,7 @@ public class TarefaController {
 }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody Tarefa tarefa){
+    public ResponseEntity<Object> create(@RequestBody @Valid Tarefa tarefa, BindingResult result){
         // if(result.hasErrors()) return ResponseEntity.badRequest().body(new RestError("Erro"+result.getErrorCount())); 
         log.info("Cadastrando tarefa" + tarefa);
 
@@ -57,11 +59,8 @@ public class TarefaController {
     @GetMapping("{id}")
     public ResponseEntity<Tarefa> show(@PathVariable Long id){
         log.info("Buscando tarefa com id "+id);
-        var tarefaEncontrada = repository.findById(id);
-        
-        if (tarefaEncontrada.isEmpty())
-            return ResponseEntity.notFound().build();       
-        return ResponseEntity.ok(tarefaEncontrada.get());
+        var despesa = repository.findById(id).orElseThrow(() -> new RestNotFoundException("tarefa não encontrada"));      
+        return ResponseEntity.ok(despesa);
         
     }
     @DeleteMapping("{id}")
@@ -79,7 +78,7 @@ public class TarefaController {
 
 }
     @PutMapping("{id}")
-    public ResponseEntity<Tarefa> update(@PathVariable Long id, @RequestBody Tarefa tarefa){
+    public ResponseEntity<Tarefa> update(@PathVariable Long id, @RequestBody @Valid Tarefa tarefa){
         log.info("Alterando tarefa com id "+id);
         var tarefaEncontrada = repository.findById(id);
         
