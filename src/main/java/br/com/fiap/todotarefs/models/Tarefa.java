@@ -1,100 +1,76 @@
 package br.com.fiap.todotarefs.models;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
+@Table(name="tdt_tarefa")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of="id")
+
 public class Tarefa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Deve preencher o campo titulo")
-    private String titulo;
-    private int categoria_id;
-    @NotEmpty(message = "Deve preencher o campo descrição")
+    @Column(name ="nm_tarefa")
+    private String nome;
+    @Column(name="ds_tarefa")
     private String descricao;
-    @NotBlank(message = "Deve preencher o campo com a data da sua tarefa") @Size(min = 5, max = 255) 
-    private LocalDate data;
+    @Column(name="dt_criacao")
+    private LocalDateTime dataCriacao;
+    @Column(name="dt_termino")
+    private Date dataTermino;
+    @Column(name="ds_favoritado")
+    private boolean favoritado;
+    @Column(name="st_categoria")
+    private boolean stts;
+    @ManyToOne()
+    @JoinColumn(name="id_categoria")
+    private Categoria categoria;
+    
     
 
-    protected Tarefa(){}
-
-    public Tarefa(String titulo, int categoria_id, String descricao, LocalDate data, Long id) {
-        this.titulo = titulo;
-        this.categoria_id = categoria_id;
-        this.descricao = descricao;
-        this.data = data;
-        this.id = id;
-    }
-
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-
-    public int getCategoria_id() {
-        return categoria_id;
-    }
-
-
-    public void setCategoria_id(int categoria_id) {
-        this.categoria_id = categoria_id;
-    }
-
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-
-    public LocalDate getData() {
-        return data;
-    }
-
-
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Tarefa [titulo=" + titulo + ", categoria_id=" + categoria_id + ", descricao=" + descricao + ", data="
-                + data + ", id=" + id + "]";
-    }
-
-    
-
-    
-
-    
+	public void atulizar(Tarefa tarefaDados) {
+		if(tarefaDados.dataTermino!=null) {
+				this.dataTermino=tarefaDados.dataTermino;
+			
+		}
+		if(tarefaDados.descricao!=null) {
+			this.descricao=tarefaDados.descricao;
+		}
+		if(tarefaDados.nome!=null) {
+			this.nome=tarefaDados.nome;
+		}
+		
+	}
+	
+	public void excluir() {
+		this.stts=false;
+	}
+	
+	public void favoritar() {
+		this.favoritado=true;
+	}
+        
 }
