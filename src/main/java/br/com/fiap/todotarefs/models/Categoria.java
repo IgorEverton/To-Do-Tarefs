@@ -1,43 +1,56 @@
 package br.com.fiap.todotarefs.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})	
+@Table(name="tdt_categoria")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of="id")
 public class Categoria {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    private String ds_categoria;
-    private Tarefa tarefa;
+	@Column(name="ds_categoria")
+    private String descricao;
+	@Column(name="st_categoria")
+	private boolean stts;
+	@JsonIgnore
+	@OneToMany(mappedBy = "categoria")
+	private List<Tarefa> tarefas = new ArrayList<>();
+	
 
-    
-    public Categoria(){
-        
-    }
+	
+	public void atualizar(Categoria categoria) {
+		if(categoria.descricao!=null) {
+			this.descricao=categoria.descricao;
+		}
+	}
+	
+	public void excluir() {
+		this.stts=false;
+	}
+	
 
-    public Categoria(Long id, String ds_categoria, Tarefa tarefa) {
-        this.id = id;
-        this.ds_categoria = ds_categoria;
-        this.tarefa = tarefa;
-    }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getDs_categoria() {
-        return ds_categoria;
-    }
-    public void setDs_categoria(String ds_categoria) {
-        this.ds_categoria = ds_categoria;
-    }
-    public Tarefa getTarefa() {
-        return tarefa;
-    }
-    public void setTarefa(Tarefa tarefa) {
-        this.tarefa = tarefa;
-    }
-    @Override
-        public String toString() {
-        // TODO Auto-generated method stub
-    return super.toString();
-    }
-
-   
 }
