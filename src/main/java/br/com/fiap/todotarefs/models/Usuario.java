@@ -1,6 +1,11 @@
 package br.com.fiap.todotarefs.models;
 import java.time.LocalDate;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import br.com.fiap.todotarefs.controllers.UsuarioController;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,4 +36,12 @@ public class Usuario {
     private boolean st_conta;
     
 
+    public EntityModel<Usuario> toModel(){
+        return EntityModel.of(
+        this,
+        linkTo(methodOn(UsuarioController.class).show(id)).withSelfRel(),
+        linkTo(methodOn(UsuarioController.class).destroy(id)).withRel("delete"),
+        linkTo(methodOn(UsuarioController.class).index(Pageable.unpaged())).withRel("all"));
+
+}
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -42,22 +43,22 @@ public class UsuarioController {
     UsuarioRepository usuarioRepository;
 
     @GetMapping
-    public List<Usuario> index(){
+    public List<Usuario> index(@PageableDefault(size = 5)Pageable pageable){
         return usuarioRepository.findAll();
     }
     @PostMapping("/api/usuarios")
-    public ResponseEntity<Object> create(@RequestBody @Valid Usuario usuario, BindingResult result){
+    public ResponseEntity<EntityModel<Usuario>> create(@RequestBody @Valid Usuario usuario, BindingResult result){
         log.info("Cadastrando Usuário"+usuario);
         usuarios.add(usuario);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuario.toModel());
     }
     
     @GetMapping("{id}")
-    public ResponseEntity<Object> show(@PathVariable Long id){
+    public EntityModel<Usuario> show(@PathVariable Long id){
         log.info("Buscando usuário com ID"+id);
         var usuario = usuarioRepository.findById(id).orElseThrow(() -> new RestNotFoundException("Usuario não encontrada"));
-        return ResponseEntity.ok(usuario);
+        return usuario.toModel();
     }
 
     @DeleteMapping("{id}")
@@ -68,13 +69,15 @@ public class UsuarioController {
     }
 
     @PutMapping("/api/usuarios/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario){
+    public EntityModel<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario){
         log.info("alterando conta com id " + id);
         getConta(id);
         usuario.setId(id);
         usuarioRepository.save(usuario);
-        return ResponseEntity.ok(usuario);
+        return usuario.toModel();
     }
+
+
     private Usuario getConta(Long id) {
         return usuarioRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));

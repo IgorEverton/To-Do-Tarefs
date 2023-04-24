@@ -3,9 +3,14 @@ package br.com.fiap.todotarefs.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import br.com.fiap.todotarefs.controllers.CategoriaController;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,5 +57,11 @@ public class Categoria {
 		this.stts=false;
 	}
 	
-
+	public EntityModel<Categoria> toModel(){
+        return EntityModel.of(
+        this,
+        linkTo(methodOn(CategoriaController.class).show(id)).withSelfRel(),
+        linkTo(methodOn(CategoriaController.class).destroy(id)).withRel("delete"),
+        linkTo(methodOn(CategoriaController.class).index(null, Pageable.unpaged())).withRel("all"));
+    }
 }
