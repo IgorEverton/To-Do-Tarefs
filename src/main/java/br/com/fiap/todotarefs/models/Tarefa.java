@@ -4,9 +4,14 @@ package br.com.fiap.todotarefs.models;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+import br.com.fiap.todotarefs.controllers.TarefaController;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -72,5 +77,13 @@ public class Tarefa {
 	public void favoritar() {
 		this.favoritado=true;
 	}
+    public EntityModel<Tarefa> toModel(){
+        return EntityModel.of(
+        this,
+        linkTo(methodOn(TarefaController.class).show(id)).withSelfRel(),
+        linkTo(methodOn(TarefaController.class).destroy(id)).withRel("delete"),
+        linkTo(methodOn(TarefaController.class).index(null, Pageable.unpaged())).withRel("all"));
+    }
+    
         
 }

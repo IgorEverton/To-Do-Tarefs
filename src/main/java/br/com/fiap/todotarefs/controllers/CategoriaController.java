@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -43,22 +44,25 @@ public class CategoriaController {
 
 
     @GetMapping
-    public Page<Categoria> index(@RequestParam(required = false) String descricao, @PageableDefault(size = 5)Pageable pageable){
-        if(descricao == null) return categoriaRepository.findAll(pageable);
-        return categoriaRepository.findByDescricaoContaining(descricao, pageable);
+    public Page<EntityModel<Categoria>> index(@RequestParam(required = false) String descricao, @PageableDefault(size = 5)Pageable pageable){
+        Page<Categoria> categoria;
+        categoria=(descricao == null)?  categoriaRepository.findAll(pageable):
+        categoriaRepository.findByDescricaoContaining(descricao, pageable);
+        return categoria.map((tarefa) -> 
+        tarefa.toModel());
     }
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody @Valid Categoria categoria, BindingResult result){
         log.info("cadastrando categoria: " + categoria);
         categoriaRepository.save(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoria.toModel());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Categoria> show(@PathVariable Long id){
+    public EntityModel<Categoria> show(@PathVariable Long id){
         log.info("buscando tarefa com id " + id);
         var categoria = categoriaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Tarefa não encontrada"));
-        return ResponseEntity.ok(categoria);
+        return categoria.toModel();
     }
 
     @DeleteMapping("/api/categorias/{id}")
@@ -73,7 +77,7 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping("/api/categorias/{id}")
-    public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria categoria){
+    public EntityModel<Categoria> update(@PathVariable Long id, @RequestBody Categoria categoria){
         log.info("Alterando tarefa com id "+id);
         categoriaRepository.findById(id).orElseThrow(() -> new RestNotFoundException("tarefa não encontrada"));
         
@@ -81,6 +85,6 @@ public class CategoriaController {
 
         categoriaRepository.save(categoria);
 
-        return ResponseEntity.ok(categoria);
+        return categoria.toModel();
     }
 }

@@ -2,7 +2,7 @@ package br.com.fiap.todotarefs.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.springframework.hateoas.EntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,25 +46,28 @@ public class TarefaController {
 
 
     @GetMapping
-    public Page<Tarefa> index(@RequestParam(required = false) String descricao, @PageableDefault(size = 5)Pageable pageable){
-        if(descricao == null) return tarefaRepository.findAll(pageable);
-        return tarefaRepository.findByDescricaoContaining(descricao, pageable);
+    public Page<EntityModel<Tarefa>> index(@RequestParam(required = false) String descricao, @PageableDefault(size = 5)Pageable pageable){
+        Page<Tarefa> tarefas;
+        tarefas=(descricao == null)?  tarefaRepository.findAll(pageable):
+        tarefaRepository.findByDescricaoContaining(descricao, pageable);
+        return tarefas.map((tarefa) -> 
+        tarefa.toModel());
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Valid Tarefa tarefa, BindingResult result){
+    public ResponseEntity<EntityModel<Tarefa>> create(@RequestBody @Valid Tarefa tarefa, BindingResult result){
         log.info("cadastrando tarefa: " + tarefa);
         tarefaRepository.save(tarefa);
-        return ResponseEntity.status(HttpStatus.CREATED).body(tarefa);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tarefa.toModel());
     }
 
 
    
     @GetMapping("{id}")
-    public ResponseEntity<Tarefa> show(@PathVariable Long id){
+    public EntityModel<Tarefa> show(@PathVariable Long id){
         log.info("buscando tarefa com id " + id);
         var tarefa = tarefaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Tarefa não encontrada"));
-        return ResponseEntity.ok(tarefa);
+        return tarefa.toModel();
         
     }
     @DeleteMapping("{id}")
@@ -80,7 +83,7 @@ public class TarefaController {
 
 }
     @PutMapping("{id}")
-    public ResponseEntity<Tarefa> update(@PathVariable Long id, @RequestBody @Valid Tarefa tarefa){
+    public EntityModel<Tarefa> update(@PathVariable Long id, @RequestBody @Valid Tarefa tarefa){
         log.info("Alterando tarefa com id "+id);
         tarefaRepository.findById(id).orElseThrow(() -> new RestNotFoundException("tarefa não encontrada"));
         
@@ -88,6 +91,6 @@ public class TarefaController {
 
         tarefaRepository.save(tarefa);
 
-        return ResponseEntity.ok(tarefa);
+        return tarefa.toModel();
 }
 }
