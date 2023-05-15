@@ -1,5 +1,6 @@
 package br.com.fiap.todotarefs.models;
 import java.time.LocalDate;
+import java.util.Collection;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
@@ -16,6 +17,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
@@ -25,15 +28,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="id")
-public class Usuario {
+public class Usuario implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nm_usuario;
-    private LocalDate dt_nascimento;
-    private String ds_email;
-    private String nr_telefone;
-    private boolean st_conta;
+    private String nome;
+    private LocalDate dataNscimento;
+    private String email;
+    private String telefone;
+    private boolean ativo;
+
+    private String senha;
     
 
     public EntityModel<Usuario> toModel(){
@@ -44,4 +49,39 @@ public class Usuario {
         linkTo(methodOn(UsuarioController.class).index(Pageable.unpaged())).withRel("all"));
 
 }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
