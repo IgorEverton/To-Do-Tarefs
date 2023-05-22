@@ -77,13 +77,7 @@ public class Tarefa {
 	public void favoritar() {
 		this.favoritado=true;
 	}
-    public EntityModel<Tarefa> toModel(){
-        return EntityModel.of(
-        this,
-        linkTo(methodOn(TarefaController.class).show(id)).withSelfRel(),
-        linkTo(methodOn(TarefaController.class).destroy(id)).withRel("delete"),
-        linkTo(methodOn(TarefaController.class).index(null, Pageable.unpaged())).withRel("all"));
-    }
+
     
         
 }

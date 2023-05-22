@@ -56,12 +56,5 @@ public class Categoria {
 	public void excluir() {
 		this.stts=false;
 	}
-	
-	public EntityModel<Categoria> toModel(){
-        return EntityModel.of(
-        this,
-        linkTo(methodOn(CategoriaController.class).show(id)).withSelfRel(),
-        linkTo(methodOn(CategoriaController.class).destroy(id)).withRel("delete"),
-        linkTo(methodOn(CategoriaController.class).index(null, Pageable.unpaged())).withRel("all"));
-    }
+
 }

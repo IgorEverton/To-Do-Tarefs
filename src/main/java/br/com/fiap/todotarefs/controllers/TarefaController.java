@@ -2,6 +2,8 @@ package br.com.fiap.todotarefs.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.transaction.Transactional;
 import org.springframework.hateoas.EntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,68 +31,44 @@ import br.com.fiap.todotarefs.repository.TarefaRepository;
 import br.com.fiap.todotarefs.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @RequestMapping("/api/tarefas")
 @RestController
 public class TarefaController {
-    
-    Logger log = LoggerFactory.getLogger(TarefaController.class);
-
-    List<Tarefa> tarefas = new ArrayList<>();
-    
     @Autowired
-    TarefaRepository tarefaRepository;
-    @Autowired
-    UsuarioRepository usuarioRepository;
+    private TarefaRepository tarefaRepository;
 
-
-    @GetMapping
-    public Page<EntityModel<Tarefa>> index(@RequestParam(required = false) String descricao, @PageableDefault(size = 5)Pageable pageable){
-        Page<Tarefa> tarefas;
-        tarefas=(descricao == null)?  tarefaRepository.findAll(pageable):
-        tarefaRepository.findByDescricaoContaining(descricao, pageable);
-        return tarefas.map((tarefa) -> 
-        tarefa.toModel());
-    }
 
     @PostMapping
-    public ResponseEntity<EntityModel<Tarefa>> create(@RequestBody @Valid Tarefa tarefa, BindingResult result){
-        log.info("cadastrando tarefa: " + tarefa);
+    @Transactional
+    public ResponseEntity adicionar(@RequestBody Tarefa tarefa, UriComponentsBuilder uriBuilder) {
         tarefaRepository.save(tarefa);
-        return ResponseEntity.status(HttpStatus.CREATED).body(tarefa.toModel());
+        var uri=uriBuilder.path("/tarefa/{id}").buildAndExpand(tarefa.getId()).toUri();
+        return ResponseEntity.created(uri).body(tarefa);
     }
 
-
-   
-    @GetMapping("{id}")
-    public EntityModel<Tarefa> show(@PathVariable Long id){
-        log.info("buscando tarefa com id " + id);
-        var tarefa = tarefaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Tarefa não encontrada"));
-        return tarefa.toModel();
-        
+    @GetMapping("/{id}")
+    public ResponseEntity getTarefa(@PathVariable Long id) {
+        var tarefa=tarefaRepository.getReferenceById(id);
+        return ResponseEntity.ok(tarefa);
     }
-    @DeleteMapping("{id}")
-    public ResponseEntity<Tarefa> destroy(@PathVariable Long id){
-        log.info("Deletando tarefa com id "+id);
-        var tarefa = tarefaRepository.findById(id).orElseThrow(() -> new RestNotFoundException("tarefa não encontrada"));
-        
 
-            tarefaRepository.delete(tarefa);
-        
-        
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody Tarefa tarefaDados) {
+        var tarefa = tarefaRepository.getReferenceById(tarefaDados.getId());
+        tarefa.atulizar(tarefaDados);
+        return ResponseEntity.ok(tarefa);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+        var tarefa=tarefaRepository.getReferenceById(id);
+        tarefa.excluir();
         return ResponseEntity.noContent().build();
+    }
 
-}
-    @PutMapping("{id}")
-    public EntityModel<Tarefa> update(@PathVariable Long id, @RequestBody @Valid Tarefa tarefa){
-        log.info("Alterando tarefa com id "+id);
-        tarefaRepository.findById(id).orElseThrow(() -> new RestNotFoundException("tarefa não encontrada"));
-        
-        tarefa.setId(id);
-
-        tarefaRepository.save(tarefa);
-
-        return tarefa.toModel();
-}
 }
