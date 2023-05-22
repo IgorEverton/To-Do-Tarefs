@@ -39,16 +39,6 @@ public class Usuario implements UserDetails {
     private boolean ativo;
 
     private String senha;
-    
-
-    public EntityModel<Usuario> toModel(){
-        return EntityModel.of(
-        this,
-        linkTo(methodOn(UsuarioController.class).show(id)).withSelfRel(),
-        linkTo(methodOn(UsuarioController.class).destroy(id)).withRel("delete"),
-        linkTo(methodOn(UsuarioController.class).index(Pageable.unpaged())).withRel("all"));
-
-}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
