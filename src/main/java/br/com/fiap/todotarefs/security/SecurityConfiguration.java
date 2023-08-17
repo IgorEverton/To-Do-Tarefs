@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST, "/api/autenticacao/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/autenticacao/registrar").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
